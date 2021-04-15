@@ -44,10 +44,6 @@ def get_last_update_date():
         db_cursor.execute("use neows_db")
         query = "select close_approach_date from neows order by close_approach_date desc limit 1;"
         db_cursor.execute(query);
-        #if db_cursor.rowcount == 0:
-            #return_date_obj = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
-            #return return_date_obj.strftime('%Y-%m-%d')
-            #return None
         for db in db_cursor:
             if db is not None:
                 return_date = db
@@ -76,21 +72,13 @@ def write_data_into_db(messages):
                     db_cursor.executemany(query, row_data)
                     return True
                 json_data = json.loads(token)
-                #print("1")
                 tple_data = (json_data["neo_reference_id"], json_data["hazardous_asteroid"],json_data["miss_distance"],json_data["close_approach_date"])
-                #print("2")
                 row_data.append(tple_data) 
-                #print("3")
                 counter += 1
-                #print("4")
-                #print(tple_data)
-                #db_cursor.execute(query,tple_data)
                 if len(row_data) > 50:
                     print("committing values")
                     db_cursor.executemany(query, row_data)
                     row_data = []
-                #print(5)
-                #print("counter in write data is {} ".format(counter))
      except mysql.connector.ProgrammingError as err:
          print(err.errno)
          print(err.msg)
@@ -183,13 +171,8 @@ if __name__ == '__main__':
     enddate = enddate_obj.strftime('%Y-%m-%d')
     print(enddate)
     pqueue = Queue()
-    #startdate = input("Start Date: ")
-    #enddate = input("End Date: ")
-    #startdate_obj = datetime.datetime.strptime(startdate, '%Y-%m-%d')
-    #enddate_obj = datetime.datetime.strptime(enddate, '%Y-%m-%d')
     delta = enddate_obj - startdate_obj
     delta = delta.days
-    print(delta)
 
     temp_date_obj = startdate_obj+timedelta(days=7)
     while temp_date_obj < enddate_obj:
@@ -221,8 +204,3 @@ if __name__ == '__main__':
     if producer_complete:
         mqueue.put('DONE')
 
-#if future.done():
-#   print("complete")
-#write_data_into_db("hello")
-#db_cursor.close()
-#db_connection.close()
