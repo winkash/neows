@@ -4,8 +4,8 @@ NeoWs is a Near Earth Object Web Service provided by NASA JPL Asteroid team. Thi
 
 Application ETL when invoked
 
-* Query the API for new data, based on the last record of capture. If there are no records in the database, backfill from a user provided date.
-* Capture relevant information about potentially hazardous NEO's, including the close approach date and miss distance.
+* Queries the API for new data, based on the last record of capture. If there are no records in the database, backfill from a user provided date.
+* Captures relevant information about potentially hazardous NEO's, including the close approach date and miss distance and writes to db
 
 Software requirements
 
@@ -14,6 +14,11 @@ Software requirements
 * Unix/Mac
 
 Mysql DB creation
+
+As a root user please execute the following statement to setup application user_id/password
+
+* CREATE USER 'neows_user'@'%' IDENTIFIED BY 'neopass!';
+* GRANT ALL PRIVILEGES ON neows_db.* TO 'neows_user'@'%' WITH GRANT OPTION;
 
 * source scripts/neows.sql
 

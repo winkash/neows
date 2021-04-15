@@ -11,6 +11,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 mqueue = Queue()
 
+"""
+Gets the nearest hazardous asteroid based on on optional start and end date
+"""
 def get_nearest_hazardous_asteroid(limit = 1, start_date = None, end_date = None):
     return_result = []
     try:
@@ -35,6 +38,9 @@ def get_nearest_hazardous_asteroid(limit = 1, start_date = None, end_date = None
         db_cursor.close()
         db_connection.close()
 
+"""
+Gets the last time the  database was updated from NeoWS APIb
+"""
 def get_last_update_date():
     return_date = None
     try:
@@ -55,6 +61,9 @@ def get_last_update_date():
         db_connection.close()
         
 
+"""
+Writes Neows API values to DB
+"""
 def write_data_into_db(messages):
      try:
          db_connection = connect(host="localhost",user="neows_user",passwd="neopass!")
@@ -89,6 +98,9 @@ def write_data_into_db(messages):
          db_connection.close()
                 
 
+"""
+Queries the neows API and write the data to a queue
+"""
 def make_neows_request(startdate, enddate):
     try:
         startdate_obj = datetime.datetime.strptime(startdate, '%Y-%m-%d')
@@ -129,6 +141,9 @@ def make_neows_request(startdate, enddate):
     except requests.exceptions.RequestException as err:
         print(err)
 
+"""
+Validates the input date
+"""
 def validate_input_date(input_date_obj):
     todaydate_obj = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
     if input_date_obj > todaydate_obj:
